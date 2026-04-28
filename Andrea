@@ -1,1 +1,96 @@
+/* Prototipos de funciones: indican */
+int cargarCSV(const char *nombre, Registro **datosal programa qué funciones existen antes de , int *total); // Función principal para lectura y memoria
+void liberarMemoria(Registro *datos); // Función para limpiar la RAM al finalizar
+void limpiarBuffer(); // Función para limpiar restos de datos en la entrada del teclado
+
+// --- Dentro de la función main ---
+Registro *datos = NULL;    // Puntero base: aquí empezará nuestra "memoria" dinámica
+int totalRegistros = 0;    // Contador para saber cuántas filas reales hemos guardado
+
+// Cargar el fichero CSV: Pasamos la dirección de memoria de nuestro puntero y del contador
+if (cargarCSV(NOMBRE_FICHERO, &datos, &totalRegistros) != 0) {
+    printf("Error: No se pudo abrir '%s'. ", NOMBRE_FICHERO);
+    return 1; // Si falla la carga, el programa se detiene aquí
+}
+printf("Fichero cargado correctamente.");
+
+/* CARGA DEL CSV CORREGIDA PARA ESPACIOS Y SIN OPERADOR FLECHA */
+int cargarCSV(const char *nombre, Registro **datos, int *total) {
+    FILE *f = fopen(nombre, "r"); // Abrimos el archivo en modo lectura
+    if (!f) return -1;            // Si el puntero al archivo es nulo, retornamos error
+
+    char linea[MAX_LINEA];
+    int capacidad = 1000;         // Reservamos espacio inicial para 1000 estructuras
+    int num = 0;                  // Índice para el registro actual
+    
+    // MALLOC: Asignamos memoria dinámica inicial en el heap
+    *datos = (Registro *)malloc(capacidad * sizeof(Registro));
+
+    // Saltar cabecera: Leemos la primera línea (títulos) para no procesarla como datos
+    fgets(linea, MAX_LINEA, f);
+
+    // Bucle de lectura: mientras existan líneas en el archivo...
+    while (fgets(linea, MAX_LINEA, f) != NULL) {
+        linea[strcspn(linea, "\r\n")] = '\0'; // Limpiamos los saltos de línea al final
+
+        char *campos[MAX_CAMPOS];
+        int nC = 0;
+        
+        // STRTOK: Dividimos la línea en trozos (tokens) usando el espacio como separador
+        char *token = strtok(linea, " ");
+
+        while (token != NULL && nC < MAX_CAMPOS) {
+            campos[nC++] = token;        // Guardamos la dirección de cada palabra
+            token = strtok(NULL, " ");   // Buscamos el siguiente espacio
+        }
+
+        // Verificamos que la línea tenga las 13 columnas necesarias
+        if (nC >= 13) { 
+            // Si nos quedamos sin espacio reservado, ampliamos la memoria
+            if (num >= capacidad) {
+                capacidad += 500; // Incremento de 500 en 500 para ser eficientes
+                // REALLOC: Busca un nuevo bloque de memoria más grande y mueve los datos
+                *datos = (Registro *)realloc(*datos, capacidad * sizeof(Registro));
+            }
+            
+            // Creamos un puntero auxiliar al registro actual dentro del array dinámico
+            Registro *r = &(*datos)[num];
+            
+            /* ASIGNACIÓN DE DATOS ando */
+            (*r).anio = atoi(campos[0]);
+            (*r).mes = atoi(campos[1]);
+            (*r).dia = atoi(campos[2]);
+            strcpy((*r).dia_semana, campos[3]);
+            strcpy((*r).hora_inicio, campos[4]);
+            strcpy((*r).hora_fin, campos[5]);
+            strcpy((*r).actividad, campos[6]);
+            strcpy((*r).modalidad, campos[7]);
+            strcpy((*r).centro, campos[8]);
+            (*r).plazas = atoi(campos[9]);
+            (*r).ocupadas = atoi(campos[10]);
+            (*r).libres = atoi(campos[11]);
+            strcpy((*r).tipo_actividad, campos[12]);
+            
+            num++; // Pasamos al siguiente registro
+        }
+    }
+
+    fclose(f);    // Cerramos el archivo físicamente
+    *total = num; // Actualizamos el contador total para que el main lo sepa
+    return 0;     
+}
+
+/* LIBERAR MEMORIA: Vacía el espacio reservado en el heap para evitar fugas de memoria */
+void liberarMemoria(Registro *datos) {
+    if (datos) {
+        free(datos); // Devuelve la memoria al sistema operativo
+    }
+}
+
+/* LIMPIAR BUFFER: Vacía los restos del teclado (útil tras usar scanf) */
+void limpiarBuffer() {
+    int c;
+    // Lee caracteres hasta encontrar el final de línea o el final del archivo
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
