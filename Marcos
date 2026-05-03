@@ -264,6 +264,220 @@ void Texto2() {
     gotoxy(65, 7);
 }
 
+//Texto3
+void Texto3() {
+    int x_texto, y_texto;
+    //Titulo//
+    {
+        gotoxy(55, 4);
+        printf("RESULTADOS");
+    }
+    //Textos
+    {
+        ////Texto Primer Cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 9;
+            gotoxy(x_texto, y_texto);
+            printf("algo");
+            gotoxy(x_texto, 14);
+            printf("algo");
+        }
+        ////// Segundo cuadrado/////
+        {
+            x_texto = 61;
+            y_texto = 9;
+            gotoxy(x_texto, y_texto);
+            printf("algo");
+            gotoxy(x_texto, 14);
+            printf("");
+        }
+        //// Tercer cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 16;
+            gotoxy(x_texto, y_texto);
+            printf("Total: ");
+            gotoxy(x_texto, 21);
+            printf(" ");
+        }
+        //// Cuarto cuadrado////
+        {
+            x_texto = 61;
+            y_texto = 16;
+            gotoxy(x_texto, y_texto);
+            printf("");
+            gotoxy(x_texto, 21);
+            printf("");
+        }
+        //// 5 cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 23;
+            gotoxy(x_texto, y_texto);
+            printf("Back to main menu");
+            gotoxy(x_texto, 28);
+            printf("Press ( 5 )");
+        }
+        //// 6 cuadrado////
+        {
+            x_texto = 61;
+            y_texto = 23;
+            gotoxy(x_texto, y_texto);
+            printf("End program");
+            gotoxy(x_texto, 28);
+            printf("Press ( 6 )");
+        }
+    }
+    gotoxy(55, 7);
+    printf("Ir a:");
+    gotoxy(65, 7);
+}
+
+//Texto4
+void Texto4() {
+    int x_texto, y_texto;
+    //Titulo//
+    {
+        gotoxy(55, 4);
+        printf("datos estadisticos");
+    }
+    //Textos
+    {
+        ////Texto Primer Cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 9;
+            gotoxy(x_texto, y_texto);
+            printf("");
+            gotoxy(x_texto, 12);
+            printf("");
+            gotoxy(x_texto, 14);
+            printf("Press ( 1 )");
+        }
+        ////// Segundo cuadrado/////
+        {
+            x_texto = 61;
+            y_texto = 9;
+            gotoxy(x_texto, y_texto);
+            printf("");
+            gotoxy(x_texto, 12);
+            printf("");
+            gotoxy(x_texto, 14);
+            printf("Press ( 2 )");
+        }
+        //// Tercer cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 16;
+            gotoxy(x_texto, y_texto);
+            printf("observaciones");
+            gotoxy(x_texto, 21);
+            printf("Press ( 3 )");
+        }
+        //// Cuarto cuadrado////
+        {
+            x_texto = 61;
+            y_texto = 16;
+            gotoxy(x_texto, y_texto);
+            printf("");
+            gotoxy(x_texto, 21);
+            printf("Press ( 4 )");
+        }
+        //// 5 cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 23;
+            gotoxy(x_texto, y_texto);
+            printf("Back to main menu: ");
+            gotoxy(x_texto, 28);
+            printf("Press ( 5 )");
+        }
+        //// 6 cuadrado////
+        {
+            x_texto = 61;
+            y_texto = 23;
+            gotoxy(x_texto, y_texto);
+            printf("End program");
+            gotoxy(x_texto, 28);
+            printf("Press ( 6 )");
+        }
+    }
+    gotoxy(55, 7);
+    printf("Go to: ");
+    gotoxy(65, 7);
+}
+
+//Texto5
+void Texto5() {
+    int x_texto, y_texto;
+    //Titulo//
+    {
+        gotoxy(55, 4);
+        printf("Control panel");
+    }
+    //Textos
+    {
+        ////Texto Primer Cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 9;
+            gotoxy(x_texto, y_texto);
+            printf("");
+            gotoxy(x_texto, 14);
+            printf("Press ( 1 )");
+        }
+        ////// Segundo cuadrado/////
+        {
+            x_texto = 61;
+            y_texto = 9;
+            gotoxy(x_texto, y_texto);
+            printf("");
+            gotoxy(x_texto, 14);
+            printf("Press ( 2 )");
+        }
+        //// Tercer cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 16;
+            gotoxy(x_texto, y_texto);
+            printf("");
+            gotoxy(x_texto, 21);
+            printf("Press ( 3 )");
+        }
+        //// Cuarto cuadrado////
+        {
+            x_texto = 61;
+            y_texto = 16;
+            gotoxy(x_texto, y_texto);
+            printf("Datos estadisticos de las ventas");
+            gotoxy(x_texto, 21);
+            printf("Press ( 4 )");
+        }
+        //// 5 cuadrado////
+        {
+            x_texto = 20;
+            y_texto = 23;
+            gotoxy(x_texto, y_texto);
+            printf("Back");
+            gotoxy(x_texto, 28);
+            printf("Press ( 5 )");
+        }
+        //// 6 cuadrado////
+        {
+        x_texto = 61;
+        y_texto = 23;
+        gotoxy(x_texto, y_texto);
+        printf("Salir del programa");
+        gotoxy(x_texto, 28);
+        printf("Press ( 6 )");
+    }
+}
+gotoxy(55, 7);
+printf("Go to: ");
+gotoxy(65, 7);
+}
+
 //Fecha
 void Fecha() {
     printf("%s", __DATE__);
