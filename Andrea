@@ -1,3 +1,28 @@
+#include <locale.h>
+
+//AÑADIR AL MAIN
+
+setlocale(LC_CTYPE,"spanish");
+
+//abro el archivo en el main
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* Prototipos de funciones: indican */
 int cargarCSV(const char *nombre, Registro **datosal programa qué funciones existen antes de , int *total); // Función principal para lectura y memoria
 void liberarMemoria(Registro *datos); // Función para limpiar la RAM al finalizar
