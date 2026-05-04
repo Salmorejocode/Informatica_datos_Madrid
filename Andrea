@@ -1,20 +1,41 @@
 #include <locale.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-//AÑADIR AL MAIN
+
+typedef struct {
+    int anio, mes, dia;
+    char dia_semana[20];
+    char hora_inicio[10];
+    char hora_fin[10];
+    char actividad[100];
+    char modalidad[100];
+    char centro[100];
+    int plazas;
+    int ocupadas;
+    int libres;
+    char tipo_actividad[100];
+} Actividad;
+
+
+int main(){
 
 setlocale(LC_CTYPE,"spanish");
 
 //abro el archivo en el main
 
+FILE *f;
+
+if ((f=fopen ("dataset.csv", "r"))==NULL) {     
+    printf ("Error en la apertura. \n ");  
+    } 
 
 
 
 
 
-
-
-
-
+}
 
 
 
