@@ -1,7 +1,7 @@
-#include <locale.h>  // Para que los acentos y eñes salgan bien en consola
-#include <stdio.h>   // Lo básico de siempre para printfs y archivos
-#include <stdlib.h>  // Para el malloc y la memoria dinámica
-#include <string.h>  // Para manejar los textos (comparar, copiar...)
+#include <locale.h>  // Para el idioma: permite configurar tildes y caracteres españoles.
+#include <stdio.h>   // Para entrada/salida: maneja los printf, scanf y la lectura de archivos (FILE).
+#include <stdlib.h>  // Para memoria y control: necesaria para malloc, realloc, free y la función exit.
+#include <string.h>  // Para cadenas: contiene funciones clave como strcmp (comparar) y strcpy (copiar).
 
 // --- 1. CONFIGURACIÓN ---
 // Empiezo con 100 huecos. Si el archivo es más grande, el programa ampliará el espacio solo.
@@ -147,8 +147,6 @@ int main() {
 }
 
 // ---------------- 4. AQUÍ ESTÁ LA LÓGICA DE LAS FUNCIONES ----------------
-
-// ---------------- 4. FUNCIONES DE LÓGICA (ANÁLISIS TÉCNICO) ----------------
 
 /**
  * esMismoDia: Función de filtrado booleano.
