@@ -148,12 +148,26 @@ int main() {
 
 // ---------------- 4. AQUÍ ESTÁ LA LÓGICA DE LAS FUNCIONES ----------------
 
-// Funioncita rápida para saber si una actividad coincide con la fecha que buscamos
+// ---------------- 4. FUNCIONES DE LÓGICA (ANÁLISIS TÉCNICO) ----------------
+
+/**
+ * esMismoDia: Función de filtrado booleano.
+ * Recibe una estructura por valor (copia) y compara sus miembros enteros.
+ * Retorna 1 (true) si todos los campos coinciden, lo que permite segmentar 
+ * el dataset masivo en el subconjunto específico de la fecha elegida.
+ */
 int esMismoDia(Actividad a, int dia, int mes, int anio) {
     return (a.dia == dia && a.mes == mes && a.anio == anio);
 }
 
-// Para no repetir nombres de centros, busco cuáles hay en ese día y los guardo en un array
+/**
+ * obtenerCentrosUnicos: Implementación de un algoritmo de "Distinct".
+ * Como los centros se repiten por cada actividad, usamos un array auxiliar 'centros'.
+ * Por cada actividad del día:
+ * 1. Verificamos si el nombre del centro ya existe en el array temporal usando strcmp.
+ * 2. Si no existe (!existe), lo añadimos mediante strcpy.
+ * Esto evita duplicados en los menús de selección.
+ */
 int obtenerCentrosUnicos(Actividad *v, int n, int dia, int mes, int anio, char centros[][120]) {
     int numCentros = 0;
     for (int i = 0; i < n; i++) {
@@ -162,17 +176,22 @@ int obtenerCentrosUnicos(Actividad *v, int n, int dia, int mes, int anio, char c
             for (int j = 0; j < numCentros; j++) {
                 if (strcmp(centros[j], v[i].centro) == 0) { existe = 1; break; }
             }
-            // Si el centro no estaba ya en mi lista, lo añado
             if (!existe && numCentros < 100) {
                 strcpy(centros[numCentros], v[i].centro);
                 numCentros++;
             }
         }
     }
-    return numCentros;
+    return numCentros; // Retorna el contador para saber cuántos centros hay que iterar luego
 }
 
-// Muestra los centros, eliges uno y te saca el horario de ese sitio
+/**
+ * listadoActividadesPorCentroInteractivo: Filtro cruzado y formateo de salida.
+ * Primero obtiene la lista de centros únicos para mostrar un submenú.
+ * Tras la selección del usuario (sel), itera de nuevo sobre todo el array original
+ * aplicando un doble filtro: fecha Y coincidencia de cadena (centro seleccionado).
+ * Usa formateo de printf (%-20s) para alinear las columnas en la consola.
+ */
 void listadoActividadesPorCentroInteractivo(Actividad *v, int n, int dia, int mes, int anio) {
     char centros[100][120];
     int numC = obtenerCentrosUnicos(v, n, dia, mes, anio, centros);
@@ -197,7 +216,12 @@ void listadoActividadesPorCentroInteractivo(Actividad *v, int n, int dia, int me
     }
 }
 
-// Cuenta cuántas veces se repite cada actividad (ej: "Pilates: 5 veces")
+/**
+ * frecuenciaActividades: Mapeo de frecuencias (Histograma de texto).
+ * Utiliza dos arrays paralelos: 'nombres' para el ID de la actividad y 'conteo' para las ocurrencias.
+ * Si strcmp encuentra la actividad, incrementa el índice correspondiente en 'conteo'.
+ * Complejidad: O(D * A) donde D son actividades del día y A actividades únicas.
+ */
 void frecuenciaActividades(Actividad *v, int n, int dia, int mes, int anio) {
     char nombres[200][120];
     int conteo[200] = {0}, numA = 0;
@@ -213,7 +237,12 @@ void frecuenciaActividades(Actividad *v, int n, int dia, int mes, int anio) {
     for (int i = 0; i < numA; i++) printf("%-25s: %d veces\n", nombres[i], conteo[i]);
 }
 
-// Mira cuál es la actividad con más gente apuntada en cada centro
+/**
+ * actividadMasPopularPorCentro: Búsqueda de máximo relativo por grupo.
+ * Itera centro por centro y, para cada uno, realiza una búsqueda lineal del 
+ * valor máximo en el campo 'ocupadas'. Guarda el índice 'idx' del struct que
+ * cumple la condición para imprimirlo al finalizar el ciclo interno.
+ */
 void actividadMasPopularPorCentro(Actividad *v, int n, int dia, int mes, int anio) {
     char centros[100][120];
     int numC = obtenerCentrosUnicos(v, n, dia, mes, anio, centros);
@@ -229,7 +258,13 @@ void actividadMasPopularPorCentro(Actividad *v, int n, int dia, int mes, int ani
     }
 }
 
-// Calcula el porcentaje de ocupación (gente/plazas) medio de cada polideportivo
+/**
+ * ocupacionMediaPorCentro: Cálculo de agregación (Promedio ponderado).
+ * Suma acumulativa de 'ocupadas' y 'plazas' para cada centro.
+ * Importante: Se realiza un casting a (float) antes de la división para evitar 
+ * el truncamiento de la división entera y obtener precisión decimal.
+ * Incluye una guarda (sumPla > 0) para evitar la división por cero.
+ */
 void ocupacionMediaPorCentro(Actividad *v, int n, int dia, int mes, int anio) {
     char centros[100][120];
     int numC = obtenerCentrosUnicos(v, n, dia, mes, anio, centros);
@@ -246,7 +281,11 @@ void ocupacionMediaPorCentro(Actividad *v, int n, int dia, int mes, int anio) {
     }
 }
 
-// Agrupa las actividades por hora para ver cuándo hay más jaleo
+/**
+ * franjasHorariasPico: Análisis de densidad temporal.
+ * Similar a frecuenciaActividades, pero utiliza la 'hora_inicio' como clave de agrupación.
+ * Permite identificar visualmente los momentos del día con mayor carga de sesiones.
+ */
 void franjasHorariasPico(Actividad *v, int n, int dia, int mes, int anio) {
     char horas[100][15];
     int conteo[100] = {0}, numH = 0;
@@ -262,7 +301,11 @@ void franjasHorariasPico(Actividad *v, int n, int dia, int mes, int anio) {
     for (int i = 0; i < numH; i++) printf("Hora %s: %d sesiones\n", horas[i], conteo[i]);
 }
 
-// Saca una lista de las actividades que tienen 0 plazas libres
+/**
+ * detectarLlenos: Filtro por estado crítico.
+ * Recorre el vector buscando elementos donde el campo 'libres' sea exactamente 0.
+ * Es una operación de complejidad O(n) que sirve como sistema de alertas para el usuario.
+ */
 void detectarLlenos(Actividad *v, int n, int dia, int mes, int anio) {
     int cont = 0;
     printf("\n--- ACTIVIDADES SIN PLAZAS LIBRES ---\n");
@@ -274,4 +317,3 @@ void detectarLlenos(Actividad *v, int n, int dia, int mes, int anio) {
     }
     if (cont == 0) printf("No hay actividades completas en este dia.\n");
 }
-
