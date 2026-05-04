@@ -3,107 +3,115 @@
 #include <stdlib.h>
 #include <string.h>
 
+// --- 1. CONFIGURACIÓN Y LÍMITES ---
+#define MAX_REGISTROS 5000 
+
 typedef struct {
     int anio, mes, dia;
-    char dia_semana[20];
-    char hora_inicio[10];
-    char hora_fin[10];
-    char actividad[100];
-    char modalidad[100];
-    char centro[100];
-    int plazas;
-    int ocupadas;
-    int libres;
-    char tipo_actividad[100];
+    char dia_semana[40];
+    char hora_inicio[15];
+    char hora_fin[15];
+    char actividad[120];
+    char modalidad[120];
+    char centro[120];
+    int plazas, ocupadas, libres;
+    char tipo_actividad[120];
 } Actividad;
 
+// Usamos 'static' para que el array se guarde en una zona de memoria grande
+static Actividad actividades[MAX_REGISTROS];
 
-// ---------------- MAIN ----------------
+// --- 2. PROTOTIPOS DE FUNCIONES ---
+int esMismoDia(Actividad a, int dia, int mes, int anio);
+int obtenerCentrosUnicos(Actividad v[], int n, int dia, int mes, int anio, char centros[][120]);
+void listadoActividadesPorCentroInteractivo(Actividad v[], int n, int dia, int mes, int anio);
+void frecuenciaActividades(Actividad v[], int n, int dia, int mes, int anio);
+void actividadMasPopularPorCentro(Actividad v[], int n, int dia, int mes, int anio);
+void ocupacionMediaPorCentro(Actividad v[], int n, int dia, int mes, int anio);
+void franjasHorariasPico(Actividad v[], int n, int dia, int mes, int anio);
+void detectarLlenos(Actividad v[], int n, int dia, int mes, int anio);
 
+// ---------------- 3. MAIN ----------------
 int main() {
     setlocale(LC_CTYPE, "spanish");
 
-    FILE *f;
-    Actividad actividades[1000];
-    char cabecera[500];
-    int i = 0;
-
-    f = fopen("dataset.csv", "r");
+    FILE *f = fopen("dataset.csv", "r");
     if (f == NULL) {
-        printf("Error: No se pudo abrir el archivo.\n");
+        printf("ERROR: No se encuentra el archivo 'dataset.csv' en la carpeta.\n");
         return 1;
     }
 
+    char cabecera[1024];
+    int i = 0;
+
     // Saltar cabecera
-    fgets(cabecera, 500, f);
+    fgets(cabecera, 1024, f);
 
-    // Leer datos
-    while (i < 1000 && fscanf(f, "%d %d %d %s %s %s %s %s %s %d %d %d %s",
-                  &actividades[i].anio,
-                  &actividades[i].mes,
-                  &actividades[i].dia,
-                  actividades[i].dia_semana,
-                  actividades[i].hora_inicio,
-                  actividades[i].hora_fin,
-                  actividades[i].actividad,
-                  actividades[i].modalidad,
-                  actividades[i].centro,
-                  &actividades[i].plazas,
-                  &actividades[i].ocupadas,
-                  &actividades[i].libres,
-                  actividades[i].tipo_actividad) == 13) {
-        i++;
+    // Lectura robusta de hasta 5000 líneas
+    while (i < MAX_REGISTROS) {
+        int r = fscanf(f, " %d %d %d %s %s %s %s %s %s %d %d %d %s",
+                  &actividades[i].anio, &actividades[i].mes, &actividades[i].dia,
+                  actividades[i].dia_semana, actividades[i].hora_inicio, actividades[i].hora_fin,
+                  actividades[i].actividad, actividades[i].modalidad, actividades[i].centro,
+                  &actividades[i].plazas, &actividades[i].ocupadas, &actividades[i].libres,
+                  actividades[i].tipo_actividad);
+        
+        if (r == 13) {
+            i++;
+        } else if (r == EOF) {
+            break; 
+        } else {
+            fscanf(f, "%*[^\n]"); // Salta línea corrupta si la hay
+        }
     }
-
     fclose(f);
 
     int n = i;
+    printf("\n>>> SISTEMA LISTO: %d registros cargados <<<\n", n);
 
-    // ---------------- MENÚ ----------------
-
-    int opcionDia;
-    int opcion;
-    int dia, mes = 1, anio = 2026;
+    int opcionDia, opcion;
+    int mes = 1, anio = 2026;
 
     do {
-        printf("\nSelecciona un dia:\n");
-        printf("1. Jueves 29 Enero\n");
-        printf("2. Viernes 30 Enero\n");
-        printf("3. Sabado 31 Enero\n");
-        printf("0. Salir\n");
-        printf("Opcion: ");
-        scanf("%d", &opcionDia);
-
+        printf("\n========================================\n");
+        printf("       CALENDARIO DE ACTIVIDADES       \n");
+        printf("========================================\n");
+        printf("Elija un dia (29, 30, 31) o 0 para SALIR: ");
+        
+        if (scanf("%d", &opcionDia) != 1) {
+            while(getchar() != '\n'); continue;
+        }
         if (opcionDia == 0) break;
 
-        switch(opcionDia) {
-            case 1: dia = 29; break;
-            case 2: dia = 30; break;
-            case 3: dia = 31; break;
-            default:
-                printf("Opcion invalida\n");
-                continue;
+        // Comprobar disponibilidad de datos para el día elegido
+        int totalDia = 0;
+        for(int k=0; k<n; k++) if(actividades[k].dia == opcionDia) totalDia++;
+
+        if(totalDia == 0) {
+            printf("[!] No hay datos para el dia %d en el sistema.\n", opcionDia);
+            continue;
         }
 
-        // SUBMENÚ DEL DÍA
         do {
-            printf("\n--- MENU DIA %d/1/2026 ---\n", dia);
-            printf("1. Mostrar actividades del dia\n");
-            printf("2. Listado por centro\n");
-            printf("0. Volver\n");
+            printf("\n--- MENU DE ANALISIS: DIA %d/01/2026 ---\n", opcionDia);
+            printf("1. Ver actividades por Centro Deportivo\n");
+            printf("2. Ver frecuencia de sesiones ofertadas\n");
+            printf("3. Identificar actividad mas popular por centro\n");
+            printf("4. Ver ocupacion media por centro (%%)\n");
+            printf("5. Ver franjas horarias con mas actividad\n");
+            printf("6. Listar actividades sin plazas libres\n");
+            printf("0. Volver al calendario\n");
             printf("Opcion: ");
             scanf("%d", &opcion);
 
             switch(opcion) {
-                case 1:
-                    mostrarActividadesDia(actividades, n, dia, mes, anio);
-                    break;
-                case 2:
-                    listadoPorCentro(actividades, n, dia, mes, anio);
-                    break;
-      
+                case 1: listadoActividadesPorCentroInteractivo(actividades, n, opcionDia, mes, anio); break;
+                case 2: frecuenciaActividades(actividades, n, opcionDia, mes, anio); break;
+                case 3: actividadMasPopularPorCentro(actividades, n, opcionDia, mes, anio); break;
+                case 4: ocupacionMediaPorCentro(actividades, n, opcionDia, mes, anio); break;
+                case 5: franjasHorariasPico(actividades, n, opcionDia, mes, anio); break;
+                case 6: detectarLlenos(actividades, n, opcionDia, mes, anio); break;
             }
-
         } while(opcion != 0);
 
     } while(opcionDia != 0);
@@ -111,173 +119,123 @@ int main() {
     return 0;
 }
 
-
-
-// ---------------- FUNCIONES ----------------
+// ---------------- 4. FUNCIONES DE LÓGICA ----------------
 
 int esMismoDia(Actividad a, int dia, int mes, int anio) {
     return (a.dia == dia && a.mes == mes && a.anio == anio);
 }
 
-void mostrarActividadesDia(Actividad v[], int n, int dia, int mes, int anio) {
-    for (int i = 0; i < n; i++) {
-        if (esMismoDia(v[i], dia, mes, anio)) {
-            printf("%s %s-%s | %s | %s | %d/%d\n",
-                   v[i].dia_semana,
-                   v[i].hora_inicio,
-                   v[i].hora_fin,
-                   v[i].actividad,
-                   v[i].centro,
-                   v[i].ocupadas,
-                   v[i].plazas);
-        }
-    }
-}
-
-void listadoPorCentro(Actividad v[], int n, int dia, int mes, int anio) {
-    char centros[100][100];
+int obtenerCentrosUnicos(Actividad v[], int n, int dia, int mes, int anio, char centros[][120]) {
     int numCentros = 0;
-    int encontrado;
-
-    // 1. Guardar centros únicos
     for (int i = 0; i < n; i++) {
         if (esMismoDia(v[i], dia, mes, anio)) {
-
-            encontrado = 0;
-
+            int existe = 0;
             for (int j = 0; j < numCentros; j++) {
-                if (strcmp(centros[j], v[i].centro) == 0) {
-                    encontrado = 1;
-                    break;
-                }
+                if (strcmp(centros[j], v[i].centro) == 0) { existe = 1; break; }
             }
-
-            if (!encontrado) {
+            if (!existe && numCentros < 100) {
                 strcpy(centros[numCentros], v[i].centro);
                 numCentros++;
             }
         }
     }
+    return numCentros;
+}
 
-    // 2. Mostrar actividades por centro
-    for (int i = 0; i < numCentros; i++) {
-        printf("\nCentro: %s\n", centros[i]);
+void listadoActividadesPorCentroInteractivo(Actividad v[], int n, int dia, int mes, int anio) {
+    char centros[100][120];
+    int numC = obtenerCentrosUnicos(v, n, dia, mes, anio, centros);
+    int sel;
 
+    if(numC == 0) return;
+
+    printf("\nSELECCIONE UN CENTRO:\n");
+    for (int i = 0; i < numC; i++) printf("%d. %s\n", i + 1, centros[i]);
+    printf("Opcion: ");
+    scanf("%d", &sel);
+
+    if (sel > 0 && sel <= numC) {
+        char* centroElegido = centros[sel-1];
+        printf("\n--- ACTIVIDADES EN %s ---\n", centroElegido);
+        printf("%-20s | %-12s | %-12s | %-10s\n", "ACTIVIDAD", "HORARIO", "MODALIDAD", "LIBRES");
         for (int j = 0; j < n; j++) {
-            if (esMismoDia(v[j], dia, mes, anio) &&
-                strcmp(v[j].centro, centros[i]) == 0) {
-
-                printf("  %s %s-%s (%d/%d)\n",
-                       v[j].actividad,
-                       v[j].hora_inicio,
-                       v[j].hora_fin,
-                       v[j].ocupadas,
-                       v[j].plazas);
+            if (esMismoDia(v[j], dia, mes, anio) && strcmp(v[j].centro, centroElegido) == 0) {
+                printf("%-20s | %s-%s | %-12s | %d/%d\n", 
+                       v[j].actividad, v[j].hora_inicio, v[j].hora_fin, v[j].modalidad, v[j].libres, v[j].plazas);
             }
         }
     }
 }
 
-
-
-
-
-
-
-
-/* Prototipos de funciones: indican */
-int cargarCSV(const char *nombre, Registro **datosal programa qué funciones existen antes de , int *total); // Función principal para lectura y memoria
-void liberarMemoria(Registro *datos); // Función para limpiar la RAM al finalizar
-void limpiarBuffer(); // Función para limpiar restos de datos en la entrada del teclado
-
-// --- Dentro de la función main ---
-Registro *datos = NULL;    // Puntero base: aquí empezará nuestra "memoria" dinámica
-int totalRegistros = 0;    // Contador para saber cuántas filas reales hemos guardado
-
-// Cargar el fichero CSV: Pasamos la dirección de memoria de nuestro puntero y del contador
-if (cargarCSV(NOMBRE_FICHERO, &datos, &totalRegistros) != 0) {
-    printf("Error: No se pudo abrir '%s'. ", NOMBRE_FICHERO);
-    return 1; // Si falla la carga, el programa se detiene aquí
-}
-printf("Fichero cargado correctamente.");
-
-/* CARGA DEL CSV CORREGIDA PARA ESPACIOS Y SIN OPERADOR FLECHA */
-int cargarCSV(const char *nombre, Registro **datos, int *total) {
-    FILE *f = fopen(nombre, "r"); // Abrimos el archivo en modo lectura
-    if (!f) return -1;            // Si el puntero al archivo es nulo, retornamos error
-
-    char linea[MAX_LINEA];
-    int capacidad = 1000;         // Reservamos espacio inicial para 1000 estructuras
-    int num = 0;                  // Índice para el registro actual
-    
-    // MALLOC: Asignamos memoria dinámica inicial en el heap
-    *datos = (Registro *)malloc(capacidad * sizeof(Registro));
-
-    // Saltar cabecera: Leemos la primera línea (títulos) para no procesarla como datos
-    fgets(linea, MAX_LINEA, f);
-
-    // Bucle de lectura: mientras existan líneas en el archivo...
-    while (fgets(linea, MAX_LINEA, f) != NULL) {
-        linea[strcspn(linea, "\r\n")] = '\0'; // Limpiamos los saltos de línea al final
-
-        char *campos[MAX_CAMPOS];
-        int nC = 0;
-        
-        // STRTOK: Dividimos la línea en trozos (tokens) usando el espacio como separador
-        char *token = strtok(linea, " ");
-
-        while (token != NULL && nC < MAX_CAMPOS) {
-            campos[nC++] = token;        // Guardamos la dirección de cada palabra
-            token = strtok(NULL, " ");   // Buscamos el siguiente espacio
+void frecuenciaActividades(Actividad v[], int n, int dia, int mes, int anio) {
+    char nombres[200][120];
+    int conteo[200] = {0}, numA = 0;
+    for (int i = 0; i < n; i++) {
+        if (esMismoDia(v[i], dia, mes, anio)) {
+            int idx = -1;
+            for (int j = 0; j < numA; j++) if (strcmp(nombres[j], v[i].actividad) == 0) { idx = j; break; }
+            if (idx != -1) conteo[idx]++;
+            else { strcpy(nombres[numA], v[i].actividad); conteo[numA] = 1; numA++; }
         }
+    }
+    printf("\n--- FRECUENCIA DE ACTIVIDADES (%d/%d) ---\n", dia, mes);
+    for (int i = 0; i < numA; i++) printf("%-25s: %d veces\n", nombres[i], conteo[i]);
+}
 
-        // Verificamos que la línea tenga las 13 columnas necesarias
-        if (nC >= 13) { 
-            // Si nos quedamos sin espacio reservado, ampliamos la memoria
-            if (num >= capacidad) {
-                capacidad += 500; // Incremento de 500 en 500 para ser eficientes
-                // REALLOC: Busca un nuevo bloque de memoria más grande y mueve los datos
-                *datos = (Registro *)realloc(*datos, capacidad * sizeof(Registro));
+void actividadMasPopularPorCentro(Actividad v[], int n, int dia, int mes, int anio) {
+    char centros[100][120];
+    int numC = obtenerCentrosUnicos(v, n, dia, mes, anio, centros);
+    printf("\n--- MAS POPULAR POR CENTRO ---\n");
+    for (int i = 0; i < numC; i++) {
+        int maxOcu = -1, idx = -1;
+        for (int j = 0; j < n; j++) {
+            if (esMismoDia(v[j], dia, mes, anio) && strcmp(v[j].centro, centros[i]) == 0) {
+                if (v[j].ocupadas > maxOcu) { maxOcu = v[j].ocupadas; idx = j; }
             }
-            
-            // Creamos un puntero auxiliar al registro actual dentro del array dinámico
-            Registro *r = &(*datos)[num];
-            
-            /* ASIGNACIÓN DE DATOS ando */
-            (*r).anio = atoi(campos[0]);
-            (*r).mes = atoi(campos[1]);
-            (*r).dia = atoi(campos[2]);
-            strcpy((*r).dia_semana, campos[3]);
-            strcpy((*r).hora_inicio, campos[4]);
-            strcpy((*r).hora_fin, campos[5]);
-            strcpy((*r).actividad, campos[6]);
-            strcpy((*r).modalidad, campos[7]);
-            strcpy((*r).centro, campos[8]);
-            (*r).plazas = atoi(campos[9]);
-            (*r).ocupadas = atoi(campos[10]);
-            (*r).libres = atoi(campos[11]);
-            strcpy((*r).tipo_actividad, campos[12]);
-            
-            num++; // Pasamos al siguiente registro
+        }
+        if (idx != -1) printf("%-25s: %s (%d ocupados)\n", centros[i], v[idx].actividad, maxOcu);
+    }
+}
+
+void ocupacionMediaPorCentro(Actividad v[], int n, int dia, int mes, int anio) {
+    char centros[100][120];
+    int numC = obtenerCentrosUnicos(v, n, dia, mes, anio, centros);
+    printf("\n--- OCUPACION MEDIA POR CENTRO ---\n");
+    for (int i = 0; i < numC; i++) {
+        int sumOcu = 0, sumPla = 0;
+        for (int j = 0; j < n; j++) {
+            if (esMismoDia(v[j], dia, mes, anio) && strcmp(v[j].centro, centros[i]) == 0) {
+                sumOcu += v[j].ocupadas; sumPla += v[j].plazas;
+            }
+        }
+        float porc = (sumPla > 0) ? ((float)sumOcu / sumPla) * 100 : 0;
+        printf("%-25s: %.1f%%\n", centros[i], porc);
+    }
+}
+
+void franjasHorariasPico(Actividad v[], int n, int dia, int mes, int anio) {
+    char horas[100][15];
+    int conteo[100] = {0}, numH = 0;
+    for (int i = 0; i < n; i++) {
+        if (esMismoDia(v[i], dia, mes, anio)) {
+            int idx = -1;
+            for (int j = 0; j < numH; j++) if (strcmp(horas[j], v[i].hora_inicio) == 0) { idx = j; break; }
+            if (idx != -1) conteo[idx]++;
+            else { strcpy(horas[numH], v[i].hora_inicio); conteo[numH] = 1; numH++; }
         }
     }
-
-    fclose(f);    // Cerramos el archivo físicamente
-    *total = num; // Actualizamos el contador total para que el main lo sepa
-    return 0;     
+    printf("\n--- ACTIVIDADES POR FRANJA ---\n");
+    for (int i = 0; i < numH; i++) printf("Hora %s: %d sesiones\n", horas[i], conteo[i]);
 }
 
-/* LIBERAR MEMORIA: Vacía el espacio reservado en el heap para evitar fugas de memoria */
-void liberarMemoria(Registro *datos) {
-    if (datos) {
-        free(datos); // Devuelve la memoria al sistema operativo
+void detectarLlenos(Actividad v[], int n, int dia, int mes, int anio) {
+    int cont = 0;
+    printf("\n--- ACTIVIDADES SIN PLAZAS LIBRES ---\n");
+    for (int i = 0; i < n; i++) {
+        if (esMismoDia(v[i], dia, mes, anio) && v[i].libres == 0) {
+            printf("[LLENO] %s en %s (%s)\n", v[i].actividad, v[i].centro, v[i].hora_inicio);
+            cont++;
+        }
     }
+    if (cont == 0) printf("No hay actividades completas en este dia.\n");
 }
-
-/* LIMPIAR BUFFER: Vacía los restos del teclado (útil tras usar scanf) */
-void limpiarBuffer() {
-    int c;
-    // Lee caracteres hasta encontrar el final de línea o el final del archivo
-    while ((c = getchar()) != '\n' && c != EOF);
-}
-
