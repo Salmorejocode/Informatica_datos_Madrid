@@ -124,7 +124,10 @@ int main() {
             printf("6. Listar actividades sin plazas libres\n");
             printf("0. Volver al calendario\n");
             printf("Opcion: ");
-            scanf("%d", &opcion);
+
+             if (scanf("%d", &opcion) != 1) { //Vuelvo a prevenir que lea una letra
+     while (getchar() != '\n'); continue; // Por si el usuario mete una letra, que no se ralle
+                             }
 
             // Llamo a la función que toque según lo que pida el usuario
             switch(opcion) {
