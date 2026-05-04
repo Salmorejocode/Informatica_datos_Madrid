@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
 typedef struct {
     int anio, mes, dia;
     char dia_semana[20];
@@ -19,21 +18,164 @@ typedef struct {
 } Actividad;
 
 
-int main(){
-setlocale(LC_CTYPE,"spanish"); //para que las ñ y las tildes no de problema
+// ---------------- MAIN ----------------
 
-//abro el archivo en el main
-FILE *f;
+int main() {
+    setlocale(LC_CTYPE, "spanish");
 
-if ((f=fopen ("dataset.csv", "r"))==NULL) {     
-    printf ("Error en la apertura. \n "); 
-    return 1;
-    } 
+    FILE *f;
+    Actividad actividades[1000];
+    char cabecera[500];
+    int i = 0;
+
+    f = fopen("dataset.csv", "r");
+    if (f == NULL) {
+        printf("Error: No se pudo abrir el archivo.\n");
+        return 1;
+    }
+
+    // Saltar cabecera
+    fgets(cabecera, 500, f);
+
+    // Leer datos
+    while (i < 1000 && fscanf(f, "%d %d %d %s %s %s %s %s %s %d %d %d %s",
+                  &actividades[i].anio,
+                  &actividades[i].mes,
+                  &actividades[i].dia,
+                  actividades[i].dia_semana,
+                  actividades[i].hora_inicio,
+                  actividades[i].hora_fin,
+                  actividades[i].actividad,
+                  actividades[i].modalidad,
+                  actividades[i].centro,
+                  &actividades[i].plazas,
+                  &actividades[i].ocupadas,
+                  &actividades[i].libres,
+                  actividades[i].tipo_actividad) == 13) {
+        i++;
+    }
+
+    fclose(f);
+
+    int n = i;
+
+    // ---------------- MENÚ ----------------
+
+    int opcionDia;
+    int opcion;
+    int dia, mes = 1, anio = 2026;
+
+    do {
+        printf("\nSelecciona un dia:\n");
+        printf("1. Jueves 29 Enero\n");
+        printf("2. Viernes 30 Enero\n");
+        printf("3. Sabado 31 Enero\n");
+        printf("0. Salir\n");
+        printf("Opcion: ");
+        scanf("%d", &opcionDia);
+
+        if (opcionDia == 0) break;
+
+        switch(opcionDia) {
+            case 1: dia = 29; break;
+            case 2: dia = 30; break;
+            case 3: dia = 31; break;
+            default:
+                printf("Opcion invalida\n");
+                continue;
+        }
+
+        // SUBMENÚ DEL DÍA
+        do {
+            printf("\n--- MENU DIA %d/1/2026 ---\n", dia);
+            printf("1. Mostrar actividades del dia\n");
+            printf("2. Listado por centro\n");
+            printf("0. Volver\n");
+            printf("Opcion: ");
+            scanf("%d", &opcion);
+
+            switch(opcion) {
+                case 1:
+                    mostrarActividadesDia(actividades, n, dia, mes, anio);
+                    break;
+                case 2:
+                    listadoPorCentro(actividades, n, dia, mes, anio);
+                    break;
+      
+            }
+
+        } while(opcion != 0);
+
+    } while(opcionDia != 0);
+
+    return 0;
+}
 
 
 
+// ---------------- FUNCIONES ----------------
 
+int esMismoDia(Actividad a, int dia, int mes, int anio) {
+    return (a.dia == dia && a.mes == mes && a.anio == anio);
+}
 
+void mostrarActividadesDia(Actividad v[], int n, int dia, int mes, int anio) {
+    for (int i = 0; i < n; i++) {
+        if (esMismoDia(v[i], dia, mes, anio)) {
+            printf("%s %s-%s | %s | %s | %d/%d\n",
+                   v[i].dia_semana,
+                   v[i].hora_inicio,
+                   v[i].hora_fin,
+                   v[i].actividad,
+                   v[i].centro,
+                   v[i].ocupadas,
+                   v[i].plazas);
+        }
+    }
+}
+
+void listadoPorCentro(Actividad v[], int n, int dia, int mes, int anio) {
+    char centros[100][100];
+    int numCentros = 0;
+    int encontrado;
+
+    // 1. Guardar centros únicos
+    for (int i = 0; i < n; i++) {
+        if (esMismoDia(v[i], dia, mes, anio)) {
+
+            encontrado = 0;
+
+            for (int j = 0; j < numCentros; j++) {
+                if (strcmp(centros[j], v[i].centro) == 0) {
+                    encontrado = 1;
+                    break;
+                }
+            }
+
+            if (!encontrado) {
+                strcpy(centros[numCentros], v[i].centro);
+                numCentros++;
+            }
+        }
+    }
+
+    // 2. Mostrar actividades por centro
+    for (int i = 0; i < numCentros; i++) {
+        printf("\nCentro: %s\n", centros[i]);
+
+        for (int j = 0; j < n; j++) {
+            if (esMismoDia(v[j], dia, mes, anio) &&
+                strcmp(v[j].centro, centros[i]) == 0) {
+
+                printf("  %s %s-%s (%d/%d)\n",
+                       v[j].actividad,
+                       v[j].hora_inicio,
+                       v[j].hora_fin,
+                       v[j].ocupadas,
+                       v[j].plazas);
+            }
+        }
+    }
 }
 
 
