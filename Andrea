@@ -126,7 +126,7 @@ int main() {
             printf("Opcion: ");
 
              if (scanf("%d", &opcion) != 1) { //Vuelvo a prevenir que lea una letra
-     while (getchar() != '\n'); continue; // Por si el usuario mete una letra, que no se ralle
+     while (getchar() != '\n'); continue; 
                              }
 
             // Llamo a la función que toque según lo que pida el usuario
