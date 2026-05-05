@@ -566,7 +566,7 @@ int leerNumero() {
 
 Interfaz() {
     int n;
-    system("COLOR 03"); //prueba de funcion de color(falta revision)
+    system("COLOR 02"); //prueba de funcion de color(falta revision)
 
     do {
         system("cls"); //limpia todo lo que haya en pantalla 
