@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <windows.h>
-
-
+//  FUNCIONES DE INTERFAZ
 void gotoxy(int x, int y) {
     HANDLE Identiventana;
     Identiventana = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -14,10 +10,7 @@ void gotoxy(int x, int y) {
 
 void DibujarMenu() {
     int x = 19, y = 8, i, fila = 81, columna = 21;
-    int x_texto, y_texto;
-    //Dibujar Cuadrados
     {
-        //Cuadrado Grande
         {
             for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
             gotoxy(x, y); printf("%c", 187);
@@ -28,112 +21,28 @@ void DibujarMenu() {
             for (i = 0; i < columna; i++) { y--; gotoxy(x, y); printf("%c", 186); }
             gotoxy(x, y); printf("%c", 201);
         }
-        //Cuadrados
         {
-            //Columna centro
-            {
-                x = 60, y = 8;
-                gotoxy(x, y); printf("%c", 203);
-                for (i = 0; i < columna; i++) { y++; gotoxy(x, y); printf("%c", 186); }
-                gotoxy(x, y); printf("%c", 202);
-            }
-            //Fila 1
-            {
-                x = 19, y = 15;
-                gotoxy(x, y); printf("%c", 204);
-                for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
-                gotoxy(x, y); printf("%c", 185);
-            }
-            //Fila 2
-            {
-                x = 19, y = 22;
-                gotoxy(x, y); printf("%c", 204);
-                for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
-                gotoxy(x, y); printf("%c", 185);
-            }
+            x = 60, y = 8;
+            gotoxy(x, y); printf("%c", 203);
+            for (i = 0; i < columna; i++) { y++; gotoxy(x, y); printf("%c", 186); }
+            gotoxy(x, y); printf("%c", 202);
+            x = 19, y = 15;
+            gotoxy(x, y); printf("%c", 204);
+            for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
+            gotoxy(x, y); printf("%c", 185);
+            x = 19, y = 22;
+            gotoxy(x, y); printf("%c", 204);
+            for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
+            gotoxy(x, y); printf("%c", 185);
             gotoxy(60, 15), printf("%c", 206);
             gotoxy(60, 22), printf("%c", 206);
         }
     }
 }
 
-int x_texto, y_texto;
-//Texto0
-void Texto0() {
-    int x_texto, y_texto;
-    //Titulo//
-    {
-        gotoxy(55, 4);
-        printf("MAIN MENU");
-    }
-    //Textos
-    {
-        ////Texto Primer Cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("algo1");
-            gotoxy(x_texto, 14);
-            printf("Press ( 1 )");
-        }
-        ////// Segundo cuadrado/////
-        {
-            x_texto = 61;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("algo 2");
-            gotoxy(x_texto, 14);
-            printf("Press ( 2 )");
-        }
-        //// Tercer cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("estadistica");
-            gotoxy(x_texto, 21);
-            printf("Press ( 3 )");
-        }
-        //// Cuarto cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("actividades");
-            gotoxy(x_texto, 21);
-            printf("Press ( 4 )");
-        }
-        //// 5 cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("centros");
-            gotoxy(x_texto, 28);
-            printf("Press ( 5 )");
-        }
-        //// 6 cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("Cerrar programa");
-            gotoxy(x_texto, 28);
-            printf("Press ( 6 )");
-        }
-    }
-    gotoxy(55, 7);
-    printf("Ir a: ");
-    gotoxy(65, 7);
-}
-
-//Texto1
 void Texto1() {
     int x = 19, y = 9, i, fila = 81, columna = 20;
-    //Dibujar Cuadrados
     {
-        //Cuadrado Grande
         {
             for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
             gotoxy(x, y); printf("%c", 187);
@@ -144,16 +53,13 @@ void Texto1() {
             for (i = 0; i < columna; i++) { y--; gotoxy(x, y); printf("%c", 186); }
             gotoxy(x, y); printf("%c", 201);
         }
-        //Separador
         {
-            //Columna centro
             {
                 x = 60, y = 9;
                 gotoxy(x, y); printf("%c", 203);
                 for (i = 0; i < columna; i++) { y++; gotoxy(x, y); printf("%c", 186); }
                 gotoxy(x, y); printf("%c", 202);
             }
-            //Fila
             {
                 x = 19, y = 19;
                 gotoxy(x, y); printf("%c", 204);
@@ -162,557 +68,24 @@ void Texto1() {
             }
             gotoxy(60, 19), printf("%c", 206);
         }
-        //Texto
         {
-            //Primer Cuadrado
-            gotoxy(20, 10);
-            printf("algo");
-            gotoxy(20, 18);
-            printf("Enter ( 1 )");
-            //Segundo Cuadrado
-            gotoxy(61, 10);
-            printf("algo1");
-            gotoxy(61, 18);
-            printf("Enter ( 2 )");
-            //Tercer Cuadrado
-            gotoxy(20, 20);
-            printf("Back to menu");
-            gotoxy(20, 28);
-            printf("Enter ( 3 )");
-            //Cuarto Cuadrado
-            gotoxy(61, 20);
-            printf("Exit");
-            gotoxy(61, 28);
-            printf("Enter ( 4 )");
-            //TITULO
-            gotoxy(53, 4);
-            printf("algo3");
+            gotoxy(20, 10); printf("Datos Dia 29"); gotoxy(20, 18); printf("Presionar ( 29 )");
+            gotoxy(61, 10); printf("Datos Dia 30"); gotoxy(61, 18); printf("Presionar ( 30 )");
+            gotoxy(20, 20); printf("Datos Dia 31"); gotoxy(20, 28); printf("Presionar ( 31 )");
+            gotoxy(61, 20); printf("Salir");        gotoxy(61, 28); printf("Presionar ( 0 ):");
+            gotoxy(53, 4);  printf("MENÚ PRINCIPAL");
         }
-        gotoxy(55, 7);
-        printf("Ir a: ");
-        gotoxy(65, 7);
-    }
-}
-
-//Texto2
-void Texto2() {
-    int x_texto, y_texto;
-    //Titulo//
-    {
-        gotoxy(55, 4);
-        printf("memoria");
-    }
-    //Textos
-    {
-        ////Texto Primer Cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("algo5 ");
-            gotoxy(x_texto, 14);
-            printf("algo");
-        }
-        ////// Segundo cuadrado/////
-        {
-            x_texto = 61;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("cosa");
-            gotoxy(x_texto, 14);
-            printf("algo");
-        }
-        //// Tercer cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("algo");
-            gotoxy(x_texto, 21);
-            printf("nada");
-        }
-        //// Cuarto cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("algo");
-            gotoxy(x_texto, 21);
-            printf("ejemolo");
-        }
-        //// 5 cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("Back to menu");
-            gotoxy(x_texto, 28);
-            printf("Press ( 5 )");
-        }
-        //// 6 cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("End program");
-            gotoxy(x_texto, 28);
-            printf("Press ( 6 )");
-        }
-    }
-    gotoxy(55, 7);
-    printf("Ir a:");
-    gotoxy(65, 7);
-}
-
-//Texto3
-void Texto3() {
-    int x_texto, y_texto;
-    //Titulo//
-    {
-        gotoxy(55, 4);
-        printf("RESULTADOS");
-    }
-    //Textos
-    {
-        ////Texto Primer Cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("algo");
-            gotoxy(x_texto, 14);
-            printf("algo");
-        }
-        ////// Segundo cuadrado/////
-        {
-            x_texto = 61;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("algo");
-            gotoxy(x_texto, 14);
-            printf("");
-        }
-        //// Tercer cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("Total: ");
-            gotoxy(x_texto, 21);
-            printf(" ");
-        }
-        //// Cuarto cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("");
-            gotoxy(x_texto, 21);
-            printf("");
-        }
-        //// 5 cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("Back to main menu");
-            gotoxy(x_texto, 28);
-            printf("Press ( 5 )");
-        }
-        //// 6 cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("End program");
-            gotoxy(x_texto, 28);
-            printf("Press ( 6 )");
-        }
-    }
-    gotoxy(55, 7);
-    printf("Ir a:");
-    gotoxy(65, 7);
-}
-
-//Texto4
-void Texto4() {
-    int x_texto, y_texto;
-    //Titulo//
-    {
-        gotoxy(55, 4);
-        printf("datos estadisticos");
-    }
-    //Textos
-    {
-        ////Texto Primer Cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("");
-            gotoxy(x_texto, 12);
-            printf("");
-            gotoxy(x_texto, 14);
-            printf("Press ( 1 )");
-        }
-        ////// Segundo cuadrado/////
-        {
-            x_texto = 61;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("");
-            gotoxy(x_texto, 12);
-            printf("");
-            gotoxy(x_texto, 14);
-            printf("Press ( 2 )");
-        }
-        //// Tercer cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("observaciones");
-            gotoxy(x_texto, 21);
-            printf("Press ( 3 )");
-        }
-        //// Cuarto cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("");
-            gotoxy(x_texto, 21);
-            printf("Press ( 4 )");
-        }
-        //// 5 cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("Back to main menu: ");
-            gotoxy(x_texto, 28);
-            printf("Press ( 5 )");
-        }
-        //// 6 cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("End program");
-            gotoxy(x_texto, 28);
-            printf("Press ( 6 )");
-        }
-    }
-    gotoxy(55, 7);
-    printf("Go to: ");
-    gotoxy(65, 7);
-}
-
-//Texto5
-void Texto5() {
-    int x_texto, y_texto;
-    //Titulo//
-    {
-        gotoxy(55, 4);
-        printf("Control panel");
-    }
-    //Textos
-    {
-        ////Texto Primer Cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("");
-            gotoxy(x_texto, 14);
-            printf("Press ( 1 )");
-        }
-        ////// Segundo cuadrado/////
-        {
-            x_texto = 61;
-            y_texto = 9;
-            gotoxy(x_texto, y_texto);
-            printf("");
-            gotoxy(x_texto, 14);
-            printf("Press ( 2 )");
-        }
-        //// Tercer cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("");
-            gotoxy(x_texto, 21);
-            printf("Press ( 3 )");
-        }
-        //// Cuarto cuadrado////
-        {
-            x_texto = 61;
-            y_texto = 16;
-            gotoxy(x_texto, y_texto);
-            printf("Datos estadisticos de las ventas");
-            gotoxy(x_texto, 21);
-            printf("Press ( 4 )");
-        }
-        //// 5 cuadrado////
-        {
-            x_texto = 20;
-            y_texto = 23;
-            gotoxy(x_texto, y_texto);
-            printf("Back");
-            gotoxy(x_texto, 28);
-            printf("Press ( 5 )");
-        }
-        //// 6 cuadrado////
-        {
-        x_texto = 61;
-        y_texto = 23;
-        gotoxy(x_texto, y_texto);
-        printf("Salir del programa");
-        gotoxy(x_texto, 28);
-        printf("Press ( 6 )");
-    }
-}
-gotoxy(55, 7);
-printf("Go to: ");
-gotoxy(65, 7);
-}
-
-//Fecha
-void Fecha() {
-    printf("%s", __DATE__);
-}
-
-void CuatroCuadrados() {
-    int x = 19, y = 9, i, fila = 81, columna = 20;
-    int x_texto, y_texto;
-    //Dibujar Cuadrados
-    {
-        //Cuadrado Grande
-        {
-            for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
-            gotoxy(x, y); printf("%c", 187);
-            for (i = 0; i < columna; i++) { y++; gotoxy(x, y); printf("%c", 186); }
-            gotoxy(x, y); printf("%c", 188);
-            for (i = 0; i < fila; i++) { x--; gotoxy(x, y); printf("%c", 205); }
-            gotoxy(x, y); printf("%c", 200);
-            for (i = 0; i < columna; i++) { y--; gotoxy(x, y); printf("%c", 186); }
-            gotoxy(x, y); printf("%c", 201);
-        }
-        //Separador
-        {
-            //Columna centro
-            {
-                x = 60, y = 9;
-                gotoxy(x, y); printf("%c", 203);
-                for (i = 0; i < columna; i++) { y++; gotoxy(x, y); printf("%c", 186); }
-                gotoxy(x, y); printf("%c", 202);
-            }
-            //Fila
-            {
-                x = 19, y = 19;
-                gotoxy(x, y); printf("%c", 204);
-                for (i = 0; i < fila; i++) { x++; gotoxy(x, y); printf("%c", 205); }
-                gotoxy(x, y); printf("%c", 185);
-            }
-            gotoxy(60, 19), printf("%c", 206);
-        }
-        //Texto
-        {
-            //Primer Cuadrado
-            gotoxy(20, 10);
-            printf("Run");
-            gotoxy(20, 18);
-            printf("Enter ( 1 )");
-            //Segundo Cuadrado
-            gotoxy(61, 10);
-            printf("Pause");
-            gotoxy(61, 18);
-            printf("Enter ( 2 )");
-            //Tercer Cuadrado
-            gotoxy(20, 20);
-            printf("Stop");
-            gotoxy(20, 28);
-            printf("Enter ( 3 )");
-            //Cuarto Cuadrado
-            gotoxy(61, 20);
-            printf("Exit");
-            gotoxy(61, 28);
-            printf("Enter ( 4 )");
-            //TITULO
-            gotoxy(53, 4);
-            printf("CLASSIFIER CONTROL");
-        }
-        gotoxy(55, 7);
-        printf("Go to: ");
-        gotoxy(65, 7);
+        gotoxy(55, 7); printf("Ir a: "); gotoxy(65, 7);
     }
 }
 
 int leerNumero() {
     char buffer[10];
-    int i = 0;
-    int c_int;
-    printf("Introduce una opcion: ");
+    int i = 0, c_int;
     while ((c_int = getchar()) != '\n' && i < sizeof(buffer) - 1) {
         buffer[i++] = (char)c_int;
     }
     buffer[i] = '\0';
-    if (i == 0) {
-        return -1; // Indica fin de entrada
-    }
-    return atoi(buffer);//Convierte la cadena del buffer en un numero entero
-}
-
-Interfaz() {
-    int n;
-    system("COLOR 02"); //prueba de funcion de color(falta revision)
-
-    do {
-        system("cls"); //limpia todo lo que haya en pantalla 
-        printf("\a");
-        gotoxy(80, 2);
-        Fecha();
-        DibujarMenu(); //imprime los recuadros
-        Texto0();
-
-        n = leerNumero();
-
-        switch (n) {
-        case 1:
-            do {
-                system("cls");
-                Texto1();
-                n = leerNumero();
-                switch (n) {
-                case 1:
-                    return 11;
-                case 2:
-                    return 12;
-                case 3:
-                    break;
-                case 4:
-                    exit(-1);
-                default:
-                    printf("Opción inválida.\n");
-                    break;
-                }
-            } while (n != 3);
-            break;
-        case 2:
-            do {
-                system("cls");
-                DibujarMenu();
-                Texto2();
-                n = leerNumero();
-                switch (n) {
-                case 1:
-                    return 21;
-                case 2:
-                    return 22;
-                case 3:
-                    return 23;
-                case 4:
-                    return 24;
-                case 5:
-                    break;
-                case 6:
-                    exit(-1);
-                default:
-                    printf("Opción inválida.\n");
-                    break;
-                }
-            } while (n != 5);
-            break;
-        case 3:
-            do {
-                system("cls");
-                DibujarMenu();
-                Texto3();
-                n = leerNumero();
-                switch (n) {
-                case 1:
-                    printf("prueba");
-                    getchar(); // Pausa para ver el resultado
-                    break;
-                case 2:
-                    return 32;
-                case 3:
-                    return 33;
-                case 4:
-                    return 34;
-                case 5:
-                    break;
-                case 6:
-                    exit(-1);
-                default:
-                    printf("Opción inválida.\n");
-                    break;
-                }
-            } while (n != 5);
-            break;
-        case 4:
-            do {
-                system("cls");
-                DibujarMenu();
-                Texto4();
-                n = leerNumero();
-                switch (n) {
-                case 1:
-                    return 41;
-                case 2:
-                    return 42;
-                case 3:
-                    return 43;
-                case 4:
-                    return 44;
-                case 5:
-                    break;
-                case 6:
-                    exit(-1);
-                default:
-                    printf("Opción inválida.\n");
-                    break;
-                }
-            } while (n != 5);
-            break;
-        case 5:
-            do {
-                system("cls");
-                DibujarMenu();
-                Texto5();
-                n = leerNumero();
-                switch (n) {
-                case 1:
-                    return 51;
-                case 2:
-                    return 52;
-                case 3:
-                    return 53;
-                case 4:
-                    return 54;
-                case 5:
-                    break;
-                case 6:
-                    exit(-1);
-                default:
-                    printf("Opción inválida.\n");
-                    break;
-                }
-            } while (n != 5);
-            break;
-        case 6:
-            exit(-1);
-        default:
-            printf("Opción inválida. Introduce un número del 1 al 6.\n");
-            break;
-        };
-    } while (1); // Bucle infinito hasta que se salga con exit() o return
-}
-
-int main(void) {
-    int resultado = Interfaz();
-    system("cls");
-    printf("Opción seleccionada: %d\n", resultado);
-    return 0;
+    if (i == 0) return -1;
+    return atoi(buffer);
 }
