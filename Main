@@ -1,4 +1,4 @@
-#include <locale.h>  // Para el idioma: permite configurar tildes y caracteres españoles.
+#include <locale.h>  // Para el idioma: permite configurar tildes y caracteres españoles.No se puede usar porque rompe la interfaz
 #include <stdio.h>   // Para entrada/salida: maneja los printf, scanf y la lectura de archivos (FILE).
 #include <stdlib.h>  // Para memoria y control: necesaria para malloc, realloc, free y la función exit.
 #include <string.h>  // Para cadenas: contiene funciones clave como strcmp (comparar) y strcpy (copiar).
@@ -112,8 +112,6 @@ void Texto1() {
     }
 }
 
-#include <stdio.h>   // Necesaria para getchar() y printf()
-#include <stdlib.h>  // Necesaria para atoi()
 
 int leerNumero() {
     char buffer[10];
@@ -345,7 +343,7 @@ int main() {
     fclose(f);
 
     int n = i, opcionDia, opcion;
-    system("COLOR 03");
+    system("COLOR 03");//modifico el color de fondo y caracteres
 
     do {
         system("cls");
