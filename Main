@@ -363,7 +363,7 @@ int main() {
             gotoxy(61, 16); printf("4. Ocupacion Media");
             gotoxy(20, 23); printf("5. Franjas Pico");
             gotoxy(61, 23); printf("6. Sin Plazas");
-            gotoxy(61, 28); printf("0. Volver");
+            gotoxy(89, 28); printf("0. Volver");
             gotoxy(55, 7);  printf("Opcion: ");
 
             opcion = leerNumero();
