@@ -89,3 +89,15 @@ int leerNumero() {
     if (i == 0) return -1;
     return atoi(buffer);
 }
+
+void escribiropciones() {
+
+    gotoxy(20, 9);  printf("1. Ver por Centro");
+    gotoxy(61, 9);  printf("2. Frecuencias");
+    gotoxy(20, 16); printf("3. Mas Popular");
+    gotoxy(61, 16); printf("4. Ocupacion Media");
+    gotoxy(20, 23); printf("5. Franjas Pico");
+    gotoxy(61, 23); printf("6. Sin Plazas");
+    gotoxy(89, 28); printf("0. Volver");
+    gotoxy(55, 7);  printf("Opcion: ");
+}
