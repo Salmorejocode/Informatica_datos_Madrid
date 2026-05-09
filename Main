@@ -1,4 +1,4 @@
-#include <locale.h>  // Para el idioma: permite configurar tildes y caracteres españoles.No se puede usar porque rompe la interfaz
+#include <locale.h>  // Para el idioma: permite configurar tildes y caracteres españoles.
 #include <stdio.h>   // Para entrada/salida: maneja los printf, scanf y la lectura de archivos (FILE).
 #include <stdlib.h>  // Para memoria y control: necesaria para malloc, realloc, free y la función exit.
 #include <string.h>  // Para cadenas: contiene funciones clave como strcmp (comparar) y strcpy (copiar).
@@ -30,6 +30,7 @@ void actividadMasPopularPorCentro(Actividad* v, int n, int dia, int mes, int ani
 void ocupacionMediaPorCentro(Actividad* v, int n, int dia, int mes, int anio);
 void franjasHorariasPico(Actividad* v, int n, int dia, int mes, int anio);
 void detectarLlenos(Actividad* v, int n, int dia, int mes, int anio);
+void escribiropciones();
 
 //  FUNCIONES DE INTERFAZ
 void gotoxy(int x, int y) {
@@ -39,6 +40,18 @@ void gotoxy(int x, int y) {
     Coordenadas.X = x;
     Coordenadas.Y = y;
     SetConsoleCursorPosition(Identiventana, Coordenadas);
+}
+
+void escribiropciones() {
+
+    gotoxy(20, 9);  printf("1. Ver por Centro");
+    gotoxy(61, 9);  printf("2. Frecuencias");
+    gotoxy(20, 16); printf("3. Mas Popular");
+    gotoxy(61, 16); printf("4. Ocupacion Media");
+    gotoxy(20, 23); printf("5. Franjas Pico");
+    gotoxy(61, 23); printf("6. Sin Plazas");
+    gotoxy(89, 28); printf("0. Volver");
+    gotoxy(55, 7);  printf("Opcion: ");
 }
 
 void DibujarMenu() {
@@ -343,7 +356,7 @@ int main() {
     fclose(f);
 
     int n = i, opcionDia, opcion;
-    system("COLOR 03");//modifico el color de fondo y caracteres
+    system("COLOR 03");
 
     do {
         system("cls");
@@ -357,14 +370,7 @@ int main() {
             system("cls");
             printf("\n MENU DE ANALISIS: DIA %d/01/2026 \n", opcionDia);
             DibujarMenu();
-            gotoxy(20, 9);  printf("1. Ver por Centro");
-            gotoxy(61, 9);  printf("2. Frecuencias");
-            gotoxy(20, 16); printf("3. Mas Popular");
-            gotoxy(61, 16); printf("4. Ocupacion Media");
-            gotoxy(20, 23); printf("5. Franjas Pico");
-            gotoxy(61, 23); printf("6. Sin Plazas");
-            gotoxy(89, 28); printf("0. Volver");
-            gotoxy(55, 7);  printf("Opcion: ");
+            escribiropciones();
 
             opcion = leerNumero();
             system("cls");
